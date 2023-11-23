@@ -26,7 +26,7 @@ const ProductLists = () => {
         {category.map((category) => (
           <Nav
             key={category}
-            active={active === category}
+            $active={active === category}
             onClick={() => {
               setActive(category);
             }}
@@ -54,8 +54,8 @@ const Nav = styled.button`
   border: 0;
   outline: 0;
 
-  ${({ active }) =>
-    active &&
+  ${({ $active }) =>
+    $active &&
     `
   border-bottom: 2px solid black;
   opacity: 1;

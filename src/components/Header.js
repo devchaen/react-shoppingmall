@@ -1,7 +1,14 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { logoutUser } from "../redux/actions/userActions";
 
-const Header = () => {
+const Header = (currentUser) => {
+  const dispatch = useDispatch();
+  const logout = () => {
+    dispatch(logoutUser());
+  };
+
   return (
     <div className="ui fixed menu">
       <div className="ui container center">
@@ -13,9 +20,13 @@ const Header = () => {
           <Link to={`/cart`}>
             <button>My Cart</button>
           </Link>
-          <Link to={`/login`}>
-            <button>login</button>
-          </Link>
+          {localStorage.getItem("user") ? (
+            <button onClick={() => logout()}>logout</button>
+          ) : (
+            <Link to={`/login`}>
+              <button>login</button>
+            </Link>
+          )}
         </div>
       </div>
     </div>

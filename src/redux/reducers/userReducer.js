@@ -9,10 +9,13 @@ const initialState = {
 export const userReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case ActionTypes.USER_SIGNUP:
-      console.log(payload);
       return [{ ...payload }];
     case ActionTypes.USER_LOGIN:
-      return state;
+      localStorage.setItem("user", JSON.stringify(payload));
+      return [{ ...payload }];
+    case ActionTypes.USER_LOGOUT:
+      localStorage.removeItem("user");
+      return [];
     default:
       return state;
   }

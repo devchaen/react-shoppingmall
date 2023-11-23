@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 const MyCart = () => {
   const cartProducts = useSelector((state) => state.cartProducts.cartProducts);
-  console.log(cartProducts);
+
   return (
     <div
       style={{ marginTop: "150px" }}
@@ -26,8 +26,8 @@ const MyCart = () => {
         <div className="content">
           <span className="header">
             Total Price : $
-            {cartProducts.reduce((prev, cur) => {
-              return Number(prev) + Number(cur.price);
+            {cartProducts.reduce((acc, cur) => {
+              return Math.round((acc += cur.price) * 100) / 100;
             }, 0)}
           </span>
         </div>

@@ -1,32 +1,18 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { signUpUser } from "../redux/actions/userActions";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { app } from "../api/firebase";
-import { ActionTypes } from "../redux/constants/action-types";
+import { createUser } from "../redux/actions/userActions";
+import { useNavigate } from "react-router-dom";
 
 const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const auth = getAuth(app);
-
-  const signUp = async (e) => {
+  const signUp = (e) => {
     e.preventDefault();
-
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const newUser = {
-          email: userCredential.user.email,
-          id: userCredential.user.uid,
-          token: userCredential.user.stsTokenManager.refreshToken,
-        };
-        dispatch({ type: ActionTypes.USER_SIGNUP, payload: newUser });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    dispatch(createUser(email, password));
+    navigate("/");
   };
 
   return (

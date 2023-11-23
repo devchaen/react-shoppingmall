@@ -1,21 +1,44 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "../redux/actions/userActions";
 
 const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const login = (e) => {
+    e.preventDefault();
+    dispatch(loginUser(email, password));
+    navigate("/");
+    setEmail("");
+    setPassword("");
+  };
+
   return (
     <div
       style={{ marginTop: "100px", display: "flex", justifyContent: "center" }}
     >
       <div>
         <h1>Login</h1>
-        <form className="ui form">
+        <form onSubmit={(e) => login(e)} className="ui form">
           <div className="field">
             <label>Id</label>
-            <input type="text" name="userId" placeholder="Enter your id..." />
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              name="userId"
+              placeholder="Enter your id..."
+            />
           </div>
           <div className="field">
             <label>Password</label>
             <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               type="password"
               name="password"
               placeholder="Enter your password..."
