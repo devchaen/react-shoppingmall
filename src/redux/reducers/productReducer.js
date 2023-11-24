@@ -11,8 +11,6 @@ export const productReducer = (state = initialState, { type, payload }) => {
     case ActionTypes.FETCH_PRODUCTS:
       localStorage.setItem("allProducts", JSON.stringify(payload));
       return { ...state, products: payload };
-    case ActionTypes.SET_PRODUCTS:
-      return state;
     default:
       return state;
   }
