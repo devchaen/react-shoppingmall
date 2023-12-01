@@ -1,18 +1,21 @@
-import React, { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useDispatch } from "react-redux";
-import { createUser } from "../redux/actions/userActions";
+import { createUser } from "../redux/store/user/user.slice";
 import { useNavigate } from "react-router-dom";
+import { AppDispatch } from "../redux/store";
 
 const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const signUp = (e) => {
+  const signUp = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(createUser(email, password));
+    dispatch(createUser({ email, password }));
     navigate("/");
+    setEmail("");
+    setPassword("");
   };
 
   return (

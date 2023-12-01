@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../redux/actions/userActions";
+import { loginUser } from "../redux/store/user/user.slice";
+import { AppDispatch } from "../redux/store";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const login = (e) => {
+  const login = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(loginUser(email, password));
+    dispatch(loginUser({ email, password }));
     navigate("/");
     setEmail("");
     setPassword("");

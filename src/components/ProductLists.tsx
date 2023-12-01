@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { fetchProducts } from "../redux//store/product/product.slice";
 import ProductItem from "./ProductItem";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
 
 const category = [
   "all",
@@ -17,9 +19,10 @@ interface NavProps {
 
 const ProductLists = () => {
   const [active, setActive] = useState(category[0]);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    fetchProducts();
+    if (!localStorage.getItem("allProducts")) dispatch(fetchProducts());
   }, []);
 
   return (

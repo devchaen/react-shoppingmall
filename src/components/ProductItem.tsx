@@ -20,9 +20,9 @@ const ProductItem: React.FC<ProductItemProps> = ({ active }) => {
 
   const filterByCategory = (products: TProduct[]) => {
     if (active === "all") {
-      setRenderList([...products]);
+      setRenderList(products);
     } else {
-      let filteredList = [...products].filter(
+      let filteredList = products.filter(
         (product) => product.category === active
       );
       setRenderList(filteredList);

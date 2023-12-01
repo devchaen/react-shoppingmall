@@ -9,7 +9,7 @@ import {
 import { app } from "../../../api/firebase";
 
 const auth = getAuth(app);
-const currentUser = auth.currentUser;
+const currentUser = localStorage.getItem("user");
 
 export interface IUserState {
   user: User | null;
@@ -17,8 +17,14 @@ export interface IUserState {
   error: string | null;
 }
 
+export interface IUserInfo {
+  id: string;
+  email: string;
+  token: string;
+}
+
 const initialState: IUserState = {
-  user: currentUser ? currentUser : null,
+  user: currentUser ? JSON.parse(currentUser) : null,
   loading: false,
   error: null,
 };
@@ -61,6 +67,7 @@ export const loginUser = createAsyncThunk(
         email,
         password
       );
+
       return userCredential.user;
     } catch (error: any) {
       if (error instanceof Error) {
@@ -75,6 +82,7 @@ export const loginUser = createAsyncThunk(
 // firebase 로그아웃 비동기 액션
 export const logoutUser = createAsyncThunk("user/logout", async () => {
   await signOut(auth);
+  localStorage.removeItem("user");
 });
 
 export const userSlice = createSlice({
@@ -83,16 +91,31 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(createUser.fulfilled, (state, action) => {
-        state.user = action.payload;
+      .addCase(createUser.fulfilled, (state, { payload }) => {
+        const user: IUserInfo = {
+          id: payload.uid,
+          email: payload.email!,
+          token: payload.refreshToken,
+        };
+        localStorage.setItem("user", JSON.stringify(user));
+
+        state.loading = false;
+        state.user = payload;
       })
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(loginUser.fulfilled, (state, action) => {
+      .addCase(loginUser.fulfilled, (state, { payload }) => {
+        const user: IUserInfo = {
+          id: payload.uid,
+          email: payload.email!,
+          token: payload.refreshToken,
+        };
+        localStorage.setItem("user", JSON.stringify(user));
+
         state.loading = false;
-        state.user = action.payload;
+        state.user = payload;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -104,4 +127,5 @@ export const userSlice = createSlice({
   },
 });
 
+// export const { setUser } = userSlice.actions;
 export default userSlice.reducer;
