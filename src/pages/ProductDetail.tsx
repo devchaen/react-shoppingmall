@@ -1,14 +1,18 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { addCart } from "../redux/actions/cartActions";
+import { addCart } from "../redux/store/cart/cart.slice";
+import { RootState } from "../redux/store";
+import { TProduct } from "../redux/store/product/product.slice";
 
 const ProductDetail = () => {
-  const productId = useParams().productId;
-  const products = useSelector((state) => state.allProducts.products);
+  const productId: number = Number(useParams().productId);
+  const products: TProduct[] = useSelector(
+    (state: RootState) => state.products
+  );
   const dispatch = useDispatch();
 
-  const [product] = [...products.filter((product) => product.id == productId)];
+  const [product] = [...products.filter((product) => product.id === productId)];
   const { title, price, image, description, rating } = product;
   console.log(product);
   return (

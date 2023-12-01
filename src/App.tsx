@@ -6,12 +6,11 @@ import ProductDetail from "./pages/ProductDetail";
 import MyCart from "./pages/MyCart";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-import { useSelector } from "react-redux";
 
-const Layout = (currentUser) => {
+const Layout = () => {
   return (
     <div>
-      <Header currentUser={currentUser} />
+      <Header />
 
       <Outlet />
     </div>
@@ -19,13 +18,11 @@ const Layout = (currentUser) => {
 };
 
 function App() {
-  const currentUser = useSelector((state) => state.user[0]);
-
   return (
     <div className="App">
       {/* Routes = 중첩 라우팅 가능 */}
       <Routes>
-        <Route path="/" element={<Layout currentUser={currentUser} />}>
+        <Route path="/" element={<Layout />}>
           <Route index element={<MainPage />} />
           <Route path="/product/:productId" element={<ProductDetail />} />
           <Route path="/cart" element={<MyCart />} />

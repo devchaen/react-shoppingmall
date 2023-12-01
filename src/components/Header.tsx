@@ -1,13 +1,10 @@
-import React from "react";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { logoutUser } from "../redux/actions/userActions";
+import { IUserState, logoutUser } from "../redux/store/user/user.slice";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
-const Header = (currentUser) => {
-  const dispatch = useDispatch();
-  const logout = () => {
-    dispatch(logoutUser());
-  };
+const Header = () => {
+  const currentUser: IUserState = useSelector((state: RootState) => state.user);
 
   return (
     <div className="ui fixed menu">
@@ -17,16 +14,19 @@ const Header = (currentUser) => {
         </Link>
 
         <div className="right item">
-          <Link to={`/cart`}>
-            <button>My Cart</button>
-          </Link>
-          {localStorage.getItem("user") ? (
-            <button onClick={() => logout()}>logout</button>
+          {currentUser.user ? (
+            <div>
+              <p>환영합니다, ${currentUser.user.email}님!</p>
+              <button onClick={() => logoutUser()}>logout</button>
+            </div>
           ) : (
             <Link to={`/login`}>
               <button>login</button>
             </Link>
           )}
+          <Link to={`/cart`}>
+            <button>My Cart</button>
+          </Link>
         </div>
       </div>
     </div>

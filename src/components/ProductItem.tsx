@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addCart } from "../redux/actions/cartActions";
+import { addCart } from "../redux/store/cart/cart.slice";
+import { RootState } from "../redux/store";
+import { TProduct } from "../redux/store/product/product.slice";
 
-const ProductItem = ({ active }) => {
-  const [renderList, setRenderList] = useState([]);
-  const products = useSelector((state) => state.allProducts.products);
+interface ProductItemProps {
+  active: string;
+}
+
+const ProductItem: React.FC<ProductItemProps> = ({ active }) => {
+  const [renderList, setRenderList] = useState<TProduct[]>([]);
+  const products = useSelector((state: RootState) => state.products);
   const dispatch = useDispatch();
 
   useEffect(() => {
     filterByCategory(products);
   }, [active, products]);
 
-  const filterByCategory = (products) => {
+  const filterByCategory = (products: TProduct[]) => {
     if (active === "all") {
       setRenderList([...products]);
     } else {
@@ -25,7 +31,7 @@ const ProductItem = ({ active }) => {
 
   return (
     <>
-      {renderList.map((product) => (
+      {renderList.map((product: TProduct) => (
         <div className="column" key={product.id}>
           <div className="ui link cards">
             <div className="ui card">

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { fetchProducts } from "../redux/actions/productActions";
+import { fetchProducts } from "../redux//store/product/product.slice";
 import ProductItem from "./ProductItem";
 import styled from "styled-components";
 
@@ -12,12 +11,15 @@ const category = [
   "jewelery",
 ];
 
+interface NavProps {
+  $active: boolean;
+}
+
 const ProductLists = () => {
   const [active, setActive] = useState(category[0]);
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    fetchProducts();
   }, []);
 
   return (
@@ -44,7 +46,7 @@ const ProductLists = () => {
 
 export default ProductLists;
 
-const Nav = styled.button`
+const Nav = styled.button<NavProps>`
   font-size: 20px;
   padding: 10px 60px;
   margin-bottom: 30px;

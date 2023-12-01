@@ -1,4 +1,3 @@
-import React from "react";
 import ProductLists from "../components/ProductLists";
 
 const MainPage = () => {

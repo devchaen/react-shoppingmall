@@ -1,8 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { TProduct } from "../redux/store/product/product.slice";
 
 const MyCart = () => {
-  const cartProducts = useSelector((state) => state.cartProducts.cartProducts);
+  const cartProducts: TProduct[] = useSelector(
+    (state: RootState) => state.cartProducts
+  );
 
   return (
     <div

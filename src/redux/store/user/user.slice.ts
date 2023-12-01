@@ -11,7 +11,7 @@ import { app } from "../../../api/firebase";
 const auth = getAuth(app);
 const currentUser = auth.currentUser;
 
-interface IUserState {
+export interface IUserState {
   user: User | null;
   loading: boolean;
   error: string | null;
